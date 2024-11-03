@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Made by matebe12</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="assets/logo.png" type="image/x-icon">
+</head>
+<body>
+    <!-- 고정된 헤더 -->
+    <header class="header">
+        <div class="header-content">
+            <img src="./assets/logo.png" id="logo"/>
+            <h2>기출문제 풀기</h2>
+            <div class="github-link">
+                <a href="https://github.com/matebe12" target="_blank" class="a-link">
+                    <img src="./assets/github.png" alt="GitHub" class="github-icon">
+                    Made by matebe12
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 메인 콘텐츠 영역 -->
+    <div class="content-wrapper">
+        <div class="container">
+            <!-- 드래그 앤 드롭 파일 업로드 영역 -->
+            <div id="dropZone" class="drop-zone" onclick="document.getElementById('pdfInput').click()">
+                <p>파일을 여기에 드래그 앤 드롭하거나 클릭하여 선택하세요</p>
+                <input type="file" id="pdfInput" accept="application/pdf" style="display: none;" onchange="handleFileSelect(this.files)">
+            </div>
+            <!-- 문제 수와 시작 번호 입력 -->
+            <div class="input-fields">
+                <label>문제 수 &nbsp;<input type="number" id="questionCount" min="1"></label>
+                <label>시작 번호 &nbsp;<input type="number" id="startNumber" min="1"></label>
+                <button onclick="generateQuestions()">문제 생성</button>
+            </div>
+            
+            <!-- PDF 미리보기 -->
+            <div id="pdfPreview" class="pdf-preview"></div>
+        </div>
+        
+        <!-- 사이드바: 탭을 통한 정답 입력 및 답안 작성 -->
+        <div class="sidebar">
+            <div class="tabs">
+                <button onclick="showTab('solveTab')" class="active">답안 작성</button>
+                <button onclick="showTab('answerTab')">정답 입력</button>
+                <div id="tabSlider" class="tab-slider"></div>
+            </div>
+            
+            <!-- 답안 작성 탭 -->
+            <div id="solveTab" class="tab-content active">
+                <h2>답안 작성</h2>
+                <div id="recentScoreDisplay" class="recent-score">최근 점수: -</div>
+                <div id="questionsContainer"></div>
+                <!-- 점수 계산 -->
+                <button onclick="calculateScore()">점수 계산</button>
+                <div id="scoreDisplay"></div>
+            </div>
+            
+            <!-- 정답 입력 탭 -->
+            <div id="answerTab" class="tab-content">
+                <h2>정답 입력</h2>
+                <div id="answersContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
