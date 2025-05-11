@@ -1,3 +1,6 @@
+
+let fileName = '';
+
 function showTab(tabId) {
     // 모든 탭 버튼에서 active 클래스 제거
     document.querySelectorAll('.tabs button').forEach(button => {
@@ -135,8 +138,10 @@ function validateAnswer(input) {
 }
 
 function saveCorrectAnswersToLocalStorage() {
-    const fileName = document.getElementById('pdfInput').files[0]?.name;
-    if (!fileName) return;
+    if (!fileName) {
+        console.log('파일이 선택되지 않았습니다.');
+        return;
+    }
 
     const corrects = document.querySelectorAll('input[id^="answer"]');
     const correctData = {};
@@ -146,17 +151,29 @@ function saveCorrectAnswersToLocalStorage() {
         correctData[questionNumber] = correctInput.value;
     });
 
-    localStorage.setItem(`${fileName}_정답`, JSON.stringify(correctData));
+    try {
+        localStorage.setItem(`${fileName}_정답`, JSON.stringify(correctData));
+        console.log('정답이 저장되었습니다:', correctData);
+    } catch (error) {
+        console.error('정답 저장 중 오류 발생:', error);
+    }
 }
 
 function saveSettingsToLocalStorage() {
-    const fileName = document.getElementById('pdfInput').files[0]?.name;
-    if (!fileName) return;
+    if (!fileName) {
+        console.log('파일이 선택되지 않았습니다.');
+        return;
+    }
 
     const questionCount = document.getElementById('questionCount').value;
     const startNumber = document.getElementById('startNumber').value;
 
-    localStorage.setItem(`${fileName}_설정`, JSON.stringify({ questionCount, startNumber }));
+    try {
+        localStorage.setItem(`${fileName}_설정`, JSON.stringify({ questionCount, startNumber }));
+        console.log('설정이 저장되었습니다:', { questionCount, startNumber });
+    } catch (error) {
+        console.error('설정 저장 중 오류 발생:', error);
+    }
 }
 
 function loadSettingsFromLocalStorage(fileName) {
@@ -224,7 +241,6 @@ function calculateScore() {
     document.getElementById('scoreDisplay').textContent = `점수: ${score.toFixed(2)}점`;
 
     // 최근 점수 로컬 스토리지에 저장
-    const fileName = document.getElementById('pdfInput').files[0]?.name;
     if (fileName) {
         localStorage.setItem(`${fileName}_최근점수`, score.toFixed(2));
         setRecentScoreDisplay(score.toFixed(2));
@@ -285,7 +301,7 @@ function handleFileSelect(files) {
         const fileURL = URL.createObjectURL(file);
         const pdfPreview = document.getElementById('pdfPreview');
         pdfPreview.innerHTML = `<iframe src="${fileURL}" width="100%" height="100%"></iframe>`;
-        
+        fileName = file.name;
         clearInputs();
         loadSettingsFromLocalStorage(file.name);
 
