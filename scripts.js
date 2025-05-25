@@ -90,7 +90,7 @@ function generateQuestions() {
     questionDiv.classList.add("question");
     questionDiv.innerHTML = `
             <label>문제 ${questionNumber}: 
-                <input type="text" data-answer-id="answer${questionNumber}" maxlength="1" oninput="validateAndMoveToNext(this)">
+                <input type="text" data-correct-id="correct${questionNumber}" maxlength="1" oninput="validateAndMoveToNext(this)">
             </label>
         `;
     questionsContainer.appendChild(questionDiv);
@@ -188,7 +188,8 @@ function loadSettingsFromLocalStorage(fileName) {
     // 정답 데이터 로드
     const correctData = JSON.parse(localStorage.getItem(`${fileName}_정답`) || "{}");
     Object.keys(correctData).forEach((questionNumber) => {
-      const answerInput = document.getElementById(`answer${questionNumber}`);
+      const answerInput = document.getElementById(`correct${questionNumber}`);
+      debugger;
       if (answerInput) {
         answerInput.value = correctData[questionNumber];
       }
