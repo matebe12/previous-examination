@@ -98,6 +98,8 @@ function generateQuestions() {
 
   // 문제 수와 시작 번호를 로컬 스토리지에 저장
   saveSettingsToLocalStorage();
+  // 문제 수와 시작 번호 로드
+  loadSettingsFromLocalStorage(fileName);
 }
 
 function validateAndMoveToNext(input) {
@@ -266,8 +268,6 @@ document.getElementById("pdfInput").addEventListener("change", function (event) 
     // 정답 데이터가 존재할 경우 불러오기
     if (localStorage.getItem(`${file.name}_정답`)) {
       generateQuestions(); // 파일명 기반으로 정답 데이터 불러오기
-      // 문제 수와 시작 번호 로드
-      loadSettingsFromLocalStorage(file.name);
     }
   } else {
     alert("PDF 파일을 선택해주세요.");
