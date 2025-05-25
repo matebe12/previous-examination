@@ -263,12 +263,11 @@ document.getElementById("pdfInput").addEventListener("change", function (event) 
     // 기존 입력 필드 초기화
     clearInputs();
 
-    // 문제 수와 시작 번호 로드
-    loadSettingsFromLocalStorage(file.name);
-
     // 정답 데이터가 존재할 경우 불러오기
     if (localStorage.getItem(`${file.name}_정답`)) {
       generateQuestions(); // 파일명 기반으로 정답 데이터 불러오기
+      // 문제 수와 시작 번호 로드
+      loadSettingsFromLocalStorage(file.name);
     }
   } else {
     alert("PDF 파일을 선택해주세요.");
