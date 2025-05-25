@@ -60,15 +60,22 @@ function generateQuestions() {
   const startNumber = parseInt(document.getElementById("startNumber").value);
   const questionsContainer = document.getElementById("questionsContainer");
   const answersContainer = document.getElementById("answersContainer");
-  questionsContainer.innerHTML = ""; // 초기화
-  answersContainer.innerHTML = ""; // 초기화
+
+  // 기존 필드 초기화
+  questionsContainer.innerHTML = "";
+  answersContainer.innerHTML = "";
 
   if (isNaN(questionCount) || isNaN(startNumber)) {
     alert("문제 수와 시작 번호를 입력해주세요.");
     return;
   }
 
-  const fileName = document.getElementById("pdfInput").files[0]?.name;
+  if (!fileName) {
+    alert("PDF 파일을 먼저 선택해주세요.");
+    return;
+  }
+
+  // 로컬 스토리지에서 정답 데이터 로드
   const correctData = JSON.parse(localStorage.getItem(`${fileName}_정답`) || "{}");
 
   for (let i = 0; i < questionCount; i++) {
@@ -98,8 +105,6 @@ function generateQuestions() {
 
   // 문제 수와 시작 번호를 로컬 스토리지에 저장
   saveSettingsToLocalStorage();
-  // 문제 수와 시작 번호 로드
-  loadSettingsFromLocalStorage(fileName);
 }
 
 function validateAndMoveToNext(input) {
@@ -186,15 +191,6 @@ function loadSettingsFromLocalStorage(fileName) {
   // 문제 수와 시작 번호가 있으면 바로 문제 생성
   if (settingsData.questionCount && settingsData.startNumber) {
     generateQuestions();
-
-    // 정답 데이터 로드
-    const correctData = JSON.parse(localStorage.getItem(`${fileName}_정답`) || "{}");
-    Object.keys(correctData).forEach((questionNumber) => {
-      const answerInput = document.getElementById(`answer${questionNumber}`);
-      if (answerInput) {
-        answerInput.value = correctData[questionNumber];
-      }
-    });
   }
 
   // 최근 점수 로드
@@ -264,6 +260,9 @@ document.getElementById("pdfInput").addEventListener("change", function (event) 
 
     // 기존 입력 필드 초기화
     clearInputs();
+
+    // 문제 수와 시작 번호 로드
+    loadSettingsFromLocalStorage(file.name);
 
     // 정답 데이터가 존재할 경우 불러오기
     if (localStorage.getItem(`${file.name}_정답`)) {
