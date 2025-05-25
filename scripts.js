@@ -79,7 +79,7 @@ function generateQuestions() {
     answerDiv.classList.add("question");
     answerDiv.innerHTML = `
             <label>정답 ${questionNumber}: 
-                <input type="text" id="correct${questionNumber}" maxlength="1" oninput="validateAnswer(this)"
+                <input type="text" id="answer${questionNumber}" maxlength="1" oninput="validateAnswer(this)"
                        value="${correctData[questionNumber] || ""}">
             </label>
         `;
@@ -189,7 +189,6 @@ function loadSettingsFromLocalStorage(fileName) {
     const correctData = JSON.parse(localStorage.getItem(`${fileName}_정답`) || "{}");
     Object.keys(correctData).forEach((questionNumber) => {
       const answerInput = document.getElementById(`answer${questionNumber}`);
-      debugger;
       if (answerInput) {
         answerInput.value = correctData[questionNumber];
       }
